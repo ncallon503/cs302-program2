@@ -1,3 +1,9 @@
+/* Nathan Callon, CS302, 2/5/2024, Karla Fant
+I decided to have 3 different types of animals, which will be
+pets, service animals, and competitive animals (that compete 
+in competitions, of course). By default they will all have a name 
+and age, but there will be many differences in the derived classes. */
+
 #ifndef _ANIMALS_
 #define _ANIMALS_
 
@@ -5,9 +11,12 @@
 
 using namespace std;
 
+enum PetType {
+  DOG,
+  CAT,
+};
 
-
-class Animal {
+class Animal { // Base Parent Animal class
   public:
     Animal();
     Animal(const string aName, const int anAge);
@@ -23,9 +32,10 @@ class Animal {
 
 };
 
-class Pet: public Animal {
+class Pet: public Animal { // Derived Child Pet class
   public:
   Pet();
+  Pet(const string aName, const int anAge, PetType aType);
   Pet(const Pet& aPet);
   Pet operator=(const Pet& aPet);
   ~Pet();
@@ -33,10 +43,11 @@ class Pet: public Animal {
   protected:
 
   private:
+  PetType type;
 
 };
 
-class ServAnimal: public Animal {
+class ServAnimal: public Animal { // Derived Child Service Animal class
   public:
   ServAnimal();
   ServAnimal(const ServAnimal& aServAnimal);
@@ -49,7 +60,7 @@ class ServAnimal: public Animal {
 
 };
 
-class CompAnimal: public Animal {
+class CompAnimal: public Animal { // Derived Child Competitive Animal class
   public:
   CompAnimal();
   CompAnimal(const CompAnimal& aCompAnimal);
