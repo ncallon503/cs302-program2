@@ -4,12 +4,17 @@ pets, service animals, and competitive animals (that compete
 in competitions, of course). By default they will all have a name 
 and age, but there will be many differences in the derived classes. */
 
-#ifndef _ANIMALS_
-#define _ANIMALS_
+#ifndef _ANIMALS_H_
+#define _ANIMALS_H_
 
 #include <iostream>
+#include <memory>
+#include <type_traits>
+// #include "DLL.tpp"
 
 using namespace std;
+
+
 
 enum PetType {
   DOG,
@@ -18,15 +23,25 @@ enum PetType {
 
 class Animal { // Base Parent Animal class
   public:
+    
+    typedef unique_ptr<Animal> animal_ptr;
+
     Animal();
     Animal(const string aName, const int anAge);
     Animal(const Animal& anAnimal);
     Animal operator=(const Animal& anAnimal);
     ~Animal();
 
+    animal_ptr & getNext();
+    bool setNext(Animal * anAnimal);
+    animal_ptr & getPrev();
+    bool setPrev(Animal * anAnimal);
+
   protected:
     string name;
     int age;
+    animal_ptr next;
+    animal_ptr prev;
 
   private:
 
@@ -75,6 +90,53 @@ class CompAnimal: public Animal { // Derived Child Competitive Animal class
 
 
 
+template <typename T> // This DLL can handle all 3 animal types which is Pets, Service Animals and Competitive Animals, which the user can pass in through an Enum in the main input to choose which type of animal they are interested in learning about and interacting with.
+class DLL {
+  public:
+    DLL();
+    ~DLL();
+
+    bool addAnimal(T *anAnimal);
+    bool display();
+    
 
 
-#endif // _ANIMALS_
+  protected:
+
+  private:
+    
+    unique_ptr<T> ani_head;
+
+};
+
+template <typename T>
+bool DLL<T>::display() {
+  return true;
+}
+
+template <typename T>
+DLL<T>::DLL(): ani_head(nullptr) {
+
+}
+
+template <typename T>
+DLL<T>::~DLL() {
+
+}
+
+template <typename T>
+bool DLL<T>::addAnimal(T *anAnimal) {
+  if(!ani_head) {
+    ani_head.reset(anAnimal);
+    ani_head->setNext(nullptr);
+    ani_head->setPrev(nullptr);
+    return true;
+  }
+  if(!ani_head->getNext()) {
+    ani_head->setNext(anAnimal);
+  }
+  return true;
+}
+
+
+#endif // _ANIMALS_H_
