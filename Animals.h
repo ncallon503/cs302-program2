@@ -36,6 +36,7 @@ class Animal { // Base Parent Animal class
     bool setNext(Animal * anAnimal);
     animal_ptr & getPrev();
     bool setPrev(Animal * anAnimal);
+    friend ostream & operator<<(ostream &output, const Animal& anAnimal);
 
   protected:
     string name;
@@ -134,6 +135,8 @@ bool DLL<T>::addAnimal(T *anAnimal) {
   }
   if(!ani_head->getNext()) {
     ani_head->setNext(anAnimal);
+    anAnimal->setPrev(ani_head.get());
+    return true;
   }
   return true;
 }

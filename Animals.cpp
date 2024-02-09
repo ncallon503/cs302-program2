@@ -28,8 +28,13 @@ bool Animal::setNext(Animal * anAnimal) { // Interestingly, raw pointers are pas
 }
 
 bool Animal::setPrev(Animal * anAnimal) {
-  //this->prev.reset(*anAnimal);
+  this->prev.reset(anAnimal);
   return true;
+}
+
+ostream& operator<<(ostream &output, const Animal& anAnimal) {
+  output << "Name: " << anAnimal.name << ", Age: " << anAnimal.age << "\n";
+  return output;
 }
 
 #endif // _ANIMALS_CPP_

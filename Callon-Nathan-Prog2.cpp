@@ -24,6 +24,9 @@ int main() {
     cin >> input;
   }
 
+  Animal anAnimal;
+  cout << anAnimal;
+
   delete animals;
 
 }
