@@ -12,6 +12,7 @@ and age, but there will be many differences in the derived classes. */
 #include <type_traits>
 #include <cstring>
 #include <stdexcept>
+#include <vector>
 
 using namespace std;
 
@@ -31,12 +32,20 @@ class Animal { // Base Parent Animal class
     Animal& operator=(const Animal& op2); // Assignment (sets to)
     ~Animal();
     
+    bool testFun(const int anAge) {
+      cout << "This test works\n\n\n";
+      age = anAge;
+      cout << "My new age is " << age;
+      cout << "My age is " << name.get();
+      return true;
+    }
 
     bool operator<(const Animal& op2); // Less than
     bool operator<=(const Animal& op2); // Less than equal
     bool operator>(const Animal& op2); // More than
     bool operator>=(const Animal& op2); // More than equal
     bool operator==(const Animal& op2); // Is equal to
+    bool operator==(const char * op2); // Is equal to a name by const char *
     bool operator!=(const Animal& op2); // Not equal to
 
     friend istream & operator>>(istream &input, Animal& src); // Input stream overloader
@@ -54,6 +63,30 @@ class Animal { // Base Parent Animal class
 
 };
 
+class Test: public Animal {
+  public:
+    Test(): Animal() {
+      name = "123";
+    }
+    ~Test() {
+
+    }
+
+    bool testingThis() {
+      cout << "\n\n\n\n TEST \n\n\n\n";
+
+      cout << "MY NAME IS " << name << "\n\n\n";
+      return true;
+    }
+
+
+    bool operator==(const char * op2); // Is equal to a name by const char *
+
+  private:
+    string name;
+    
+};
+
 /* class Pet: public Animal { // Derived Child Pet class
   public:
     Pet();
@@ -62,7 +95,7 @@ class Animal { // Base Parent Animal class
     Pet operator=(const Pet& aPet);
     ~Pet();
     
-    int walk();
+    int walk(); // walks the animal, increasing affection level if animal not hungry, but lowering if animal is hungry
     int play();
     int feed();
 
@@ -99,8 +132,14 @@ class CompAnimal: public Animal { // Derived Child Competing Animal class
     CompAnimal operator=(const CompAnimal& aCompAnimal);
     ~CompAnimal();
 
+    double winLossRatio(); // The higher the number the better, this is the ratio of events won vs. lost for animals
+    bool competeInEvent(const string event); // The animal competes in an event, and either ends up winning a trophy or losing. Animals that have competed more have a higher chance of winning.
+
   private:
-    string name;
+    vector<string> trophies; // List of 1st place trophies depending on what user wants to compete their animal in
+    int eventsWon; // Counter of how many events the animal has won
+    int eventsLost; // Counter of how many the events the animal has lost
+    string name; // Animal's name
 
 }; */
 

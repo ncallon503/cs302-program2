@@ -1,10 +1,14 @@
 #include "Animals.h"
 #include "DLL.h"
+#include "Menu.h"
 
 
 int main() {
 
   string input = "-1";
+
+  UserMenu clientMenu;
+  clientMenu.displayMenu();
 
   /* DLL<Animal> *animals = new DLL<Animal>;
 
@@ -24,17 +28,16 @@ int main() {
   //Node<Animal>* aNode = new Node<Animal>(Animal(1, animalType::Dog, "john"));
   //cout << "Display: " << aNode->getAni() << "\n";
 
-  char* test1 = new char[5];
-  strcpy(test1, "test");
-  string test2 = test1;
-  cout << test2 << "<<<<<\n";
-
   DLL<Animal> animals;
   animals.insert(Animal(1, animalType::Dog, "john"));
   animals.insert(Animal(1, animalType::Dog, "will"));
   animals.insert(Animal(1, animalType::Dog, "will"));
   animals.insert(Animal(1, animalType::Dog, "will"));
   animals.insert(Animal(1, animalType::Dog, "smith"));
+  animals.chooseAni("john")->getAni().testFun(123123);
+  DLL<Test> tests;
+  tests.insert(Test());
+  tests.chooseAni("123")->getAni().testingThis();
   animals.remove("test");
   animals.display();
 

@@ -59,6 +59,12 @@ bool Animal::operator==(const Animal& src) {
   else return false;
 }
 
+
+bool Animal::operator==(const char * op2) { // Is equal to a name by string
+  if(strcmp(name.get(), op2) == 0) return true;
+  else return false;
+}
+
 bool Animal::operator>(const Animal& src) {
   if(age > src.age) return true;
   else return false;
@@ -69,6 +75,11 @@ bool Animal::operator>=(const Animal& src) {
   else return false;
 }
 
+
+bool Test::operator==(const char * op2) {
+  if(strcmp(name.c_str(), op2) == 0) return true;
+  else return false;
+}
 bool Animal::operator!=(const Animal& src) {
   if((age != src.age) || !(strcmp(name.get(), src.name.get()) == 0) || (type != src.type)) return true; // Another unique case, compares all 3 attributes and if any are different returns false
   else return false;
