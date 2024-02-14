@@ -10,136 +10,99 @@ and age, but there will be many differences in the derived classes. */
 #include <iostream>
 #include <memory>
 #include <type_traits>
-// #include "DLL.tpp"
+#include <cstring>
+#include <stdexcept>
 
 using namespace std;
 
+enum animalType {
+  Dog, Cat, Bird, Fish
+};
 
-
-enum PetType {
-  DOG,
-  CAT,
+enum policeType {
+  Cadaver, Narcotics, Bomb, Chase
 };
 
 class Animal { // Base Parent Animal class
   public:
-    
-    typedef unique_ptr<Animal> animal_ptr;
-
     Animal();
-    Animal(const string aName, const int anAge);
-    Animal(const Animal& anAnimal);
-    Animal operator=(const Animal& anAnimal);
+    Animal(const int anAge, const animalType aType, const char * aName);
+    Animal(const Animal& src);
+    Animal& operator=(const Animal& op2); // Assignment (sets to)
     ~Animal();
+    
 
-    animal_ptr & getNext();
-    bool setNext(Animal * anAnimal);
-    animal_ptr & getPrev();
-    bool setPrev(Animal * anAnimal);
-    friend ostream & operator<<(ostream &output, const Animal& anAnimal);
+    bool operator<(const Animal& op2); // Less than
+    bool operator<=(const Animal& op2); // Less than equal
+    bool operator>(const Animal& op2); // More than
+    bool operator>=(const Animal& op2); // More than equal
+    bool operator==(const Animal& op2); // Is equal to
+    bool operator!=(const Animal& op2); // Not equal to
+
+    friend istream & operator>>(istream &input, Animal& src); // Input stream overloader
+    friend ostream & operator<<(ostream &output, const Animal& src); // Output stream overloader
+
+    Animal operator+(const Animal& op2); // Addition return by value
+    Animal & operator+=(const Animal& op2); // I-addition return by reference
 
   protected:
+    int age; // Age of animal, shared with all children
+    animalType type; // One of the four types of animals, shared with all children
+
+  private:
+    unique_ptr<char[]> name; // Name of the animal, a unique_ptr of a char array, not shared with children
+
+};
+
+/* class Pet: public Animal { // Derived Child Pet class
+  public:
+    Pet();
+    Pet(const string aName, const int anAge, PetType aType);
+    Pet(const Pet& aPet);
+    Pet operator=(const Pet& aPet);
+    ~Pet();
+    
+    int walk();
+    int play();
+    int feed();
+
+  private:
+    int minutesWalked; // Keeps track of amount of minutes pet is walked
+    int affectionLevel; // At a cap of 100, keeps track of how much the animal likes the owner
+    int hungerLevel; // Keeps track of how hungry the animal is
+    unique_ptr<char[]> name;
+};
+
+class PoliceAnimal: public Animal { // Derived Child Police Animal class
+  public:
+    PoliceAnimal();
+    PoliceAnimal(const int anAge, const animalType aType, const policeType aPType, const string aName); // Animal type must be dog or exception occurs, police dogs only
+    PoliceAnimal(const PoliceAnimal& src);
+    PoliceAnimal operator=(const PoliceAnimal& op2);
+    ~PoliceAnimal();
+
+    int goOnMission(); // The police animal goes on a mission and returns the amount of hours served and whether the mission was successful (0 if mission not successful)
+    int switchRole(int aRole); // Switches the animals' role, resets the hours and missions completed and returns which role the animal was switched to
+
+  private:
+    policeType pType;
+    int hoursServed; // Keeps track of hours animal has served in the force
+    int missionsCompleted; // Keeps track of how many missions the animal has completed
+    int missionsFailed; // Keeps track of how many missions the animal has failed
     string name;
-    int age;
-    animal_ptr next;
-    animal_ptr prev;
-
-  private:
-
 };
 
-class Pet: public Animal { // Derived Child Pet class
+class CompAnimal: public Animal { // Derived Child Competing Animal class
   public:
-  Pet();
-  Pet(const string aName, const int anAge, PetType aType);
-  Pet(const Pet& aPet);
-  Pet operator=(const Pet& aPet);
-  ~Pet();
-
-  protected:
+    CompAnimal();
+    CompAnimal(const CompAnimal& aCompAnimal);
+    CompAnimal operator=(const CompAnimal& aCompAnimal);
+    ~CompAnimal();
 
   private:
-  PetType type;
+    string name;
 
-};
-
-class ServAnimal: public Animal { // Derived Child Service Animal class
-  public:
-  ServAnimal();
-  ServAnimal(const ServAnimal& aServAnimal);
-  ServAnimal operator=(const ServAnimal& aServAnimal);
-  ~ServAnimal();
-
-  protected:
-
-  private:
-
-};
-
-class CompAnimal: public Animal { // Derived Child Competitive Animal class
-  public:
-  CompAnimal();
-  CompAnimal(const CompAnimal& aCompAnimal);
-  CompAnimal operator=(const CompAnimal& aCompAnimal);
-  ~CompAnimal();
-
-  protected:
-
-  private:
-
-};
-
-
-
-template <typename T> // This DLL can handle all 3 animal types which is Pets, Service Animals and Competitive Animals, which the user can pass in through an Enum in the main input to choose which type of animal they are interested in learning about and interacting with.
-class DLL {
-  public:
-    DLL();
-    ~DLL();
-
-    bool addAnimal(T *anAnimal);
-    bool display();
-    
-
-
-  protected:
-
-  private:
-    
-    unique_ptr<T> ani_head;
-
-};
-
-template <typename T>
-bool DLL<T>::display() {
-  return true;
-}
-
-template <typename T>
-DLL<T>::DLL(): ani_head(nullptr) {
-
-}
-
-template <typename T>
-DLL<T>::~DLL() {
-
-}
-
-template <typename T>
-bool DLL<T>::addAnimal(T *anAnimal) {
-  if(!ani_head) {
-    ani_head.reset(anAnimal);
-    ani_head->setNext(nullptr);
-    ani_head->setPrev(nullptr);
-    return true;
-  }
-  if(!ani_head->getNext()) {
-    ani_head->setNext(anAnimal);
-    anAnimal->setPrev(ani_head.get());
-    return true;
-  }
-  return true;
-}
-
+}; */
 
 #endif // _ANIMALS_H_
+
