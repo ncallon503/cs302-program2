@@ -46,6 +46,7 @@ class Animal { // Base Parent Animal class
     bool operator>=(const Animal& op2); // More than equal
     bool operator==(const Animal& op2); // Is equal to
     bool operator==(const char * op2); // Is equal to a name by const char *
+    bool operator!=(const char * op2); // Is not equal to a name by const char *
     bool operator!=(const Animal& op2); // Not equal to
 
     friend istream & operator>>(istream &input, Animal& src); // Input stream overloader
@@ -63,30 +64,6 @@ class Animal { // Base Parent Animal class
 
 };
 
-class Test: public Animal {
-  public:
-    Test(): Animal() {
-      name = "123";
-    }
-    ~Test() {
-
-    }
-
-    bool testingThis() {
-      cout << "\n\n\n\n TEST \n\n\n\n";
-
-      cout << "MY NAME IS " << name << "\n\n\n";
-      return true;
-    }
-
-
-    bool operator==(const char * op2); // Is equal to a name by const char *
-
-  private:
-    string name;
-    
-};
-
 /* class Pet: public Animal { // Derived Child Pet class
   public:
     Pet();
@@ -96,8 +73,8 @@ class Test: public Animal {
     ~Pet();
     
     int walk(); // walks the animal, increasing affection level if animal not hungry, but lowering if animal is hungry
-    int play();
-    int feed();
+    int play(); // plays with the animal, only possible if animal not hungry but increases affection
+    int feed(); // feeds animal, slightly increases affection but cannot do at max fullness
 
   private:
     int minutesWalked; // Keeps track of amount of minutes pet is walked
@@ -142,6 +119,31 @@ class CompAnimal: public Animal { // Derived Child Competing Animal class
     string name; // Animal's name
 
 }; */
+
+
+class Test: public Animal {
+  public:
+    Test(): Animal() {
+      name = "123";
+    }
+    ~Test() {
+
+    }
+
+    bool testingThis() {
+      cout << "\n\n\n\n TEST \n\n\n\n";
+
+      cout << "MY NAME IS " << name << "\n\n\n";
+      return true;
+    }
+
+
+    bool operator==(const char * op2); // Is equal to a name by const char *
+
+  private:
+    string name;
+    
+};
 
 #endif // _ANIMALS_H_
 

@@ -59,9 +59,13 @@ bool Animal::operator==(const Animal& src) {
   else return false;
 }
 
-
 bool Animal::operator==(const char * op2) { // Is equal to a name by string
   if(strcmp(name.get(), op2) == 0) return true;
+  else return false;
+}
+
+bool Animal::operator!=(const char * op2) { // Is equal to a name by string
+  if(!(strcmp(name.get(), op2) == 0)) return true;
   else return false;
 }
 
