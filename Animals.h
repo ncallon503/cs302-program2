@@ -13,6 +13,7 @@ and age, but there will be many differences in the derived classes. */
 #include <cstring>
 #include <stdexcept>
 #include <vector>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -80,27 +81,33 @@ class Animal { // Base Parent Animal class
     int minutesWalked; // Keeps track of amount of minutes pet is walked
     int affectionLevel; // At a cap of 100, keeps track of how much the animal likes the owner
     int hungerLevel; // Keeps track of how hungry the animal is
-    unique_ptr<char[]> name;
+    unique_ptr<char[]> cName;
 };
+
+*/
 
 class PoliceAnimal: public Animal { // Derived Child Police Animal class
   public:
     PoliceAnimal();
-    PoliceAnimal(const int anAge, const animalType aType, const policeType aPType, const string aName); // Animal type must be dog or exception occurs, police dogs only
+    PoliceAnimal(const int anAge, const policeType aPType, const string aName, const int hoursServed, const int missionsCompleted, const int missionsFailed); // Animal type must be dog or exception occurs, police dogs only
     PoliceAnimal(const PoliceAnimal& src);
-    PoliceAnimal operator=(const PoliceAnimal& op2);
+    PoliceAnimal & operator=(const PoliceAnimal& op2);
     ~PoliceAnimal();
 
     int goOnMission(); // The police animal goes on a mission and returns the amount of hours served and whether the mission was successful (0 if mission not successful)
-    int switchRole(int aRole); // Switches the animals' role, resets the hours and missions completed and returns which role the animal was switched to
+    policeType switchRole(policeType aType); // Switches the animals' role, resets the hours and missions completed and returns which role the animal was switched to
+
+    friend ostream& operator<<(ostream &output, const PoliceAnimal& src);
 
   private:
     policeType pType;
     int hoursServed; // Keeps track of hours animal has served in the force
     int missionsCompleted; // Keeps track of how many missions the animal has completed
     int missionsFailed; // Keeps track of how many missions the animal has failed
-    string name;
+    string cName;
 };
+
+/*
 
 class CompAnimal: public Animal { // Derived Child Competing Animal class
   public:
@@ -116,7 +123,7 @@ class CompAnimal: public Animal { // Derived Child Competing Animal class
     vector<string> trophies; // List of 1st place trophies depending on what user wants to compete their animal in
     int eventsWon; // Counter of how many events the animal has won
     int eventsLost; // Counter of how many the events the animal has lost
-    string name; // Animal's name
+    string cName; // Animal's name
 
 }; */
 

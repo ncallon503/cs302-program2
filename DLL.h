@@ -75,7 +75,7 @@ class DLL {
     DLL<T>();
     ~DLL<T>();
 
-    bool insert(const T anAni); // Passes in an animal and creates a node with it using the overloaded assignment operator
+    bool insert(T anAni); // Passes in an animal and creates a node with it using the overloaded assignment operator
     bool remove(const char* aName); // removes based on name
     bool removeAll(); // removes all animals
     bool display(); // displays all animals
@@ -83,11 +83,15 @@ class DLL {
     Node<T> *chooseAni(const char* aName);
 
     template <typename A>
-    friend ostream& operator<<(ostream& out, const DLL<A>& src); // Overloads ostream operator and needs Template A for declaring outside of class
+    friend ostream& operator<<(ostream& out, const DLL<A>& aDLL); // Overloads ostream operator and needs Template A for declaring outside of class
+    template <typename A>
+    friend istream& operator>>(istream& in, DLL<A>& src); // Overloads istream operator, uses Template A for same reason
 
   public:
     Node<T> *chooseAniFinder(const char* aName, Node<T> *aNode);
   private:
+    
+    bool insert(T anAni, Node<T> *aNode);
     bool removeNext(Node<T> *aNode); // Helper for removeAll to remove all nodes
     bool removeNameHelper(Node<T> *aNode, const char* aName); // Helper for traversing to remove by name
     bool displayNext(Node<T> *aNode); // Recursive helper for display() function
@@ -178,23 +182,51 @@ bool DLL<T>::removeNext(Node<T> *aNode) {
 }
 
 template <typename T>
-bool DLL<T>::insert(const T anAni) {
+bool DLL<T>::insert(T anAni) {
   if(!head) {
     head = new Node<T>(anAni);
     tail = head;
     return true;
   }
   if(!head->getNext()) {
-    head->setNext(new Node<T>(anAni));
-    tail = head->getNext();
-    tail->setPrev(head);
+    if(anAni >= head->getAni()) {
+      head->setNext(new Node<T>(anAni));
+      tail = head->getNext();
+      tail->setPrev(head);
+      return true;
+    } else {
+      head = new Node<T>(anAni);
+      tail->setPrev(head);
+      head->setNext(tail);
+      return true;
+    }
+  }
+  // Head comparison
+  if(anAni < head->getAni()) {
+    Node<T> *temp = new Node<T>(anAni);
+    head->setPrev(temp);
+    temp->setNext(head);
+    head = head->getPrev();
     return true;
   }
-  Node<T> *toSet = new Node<T>(anAni);
-  toSet->setPrev(tail);
-  tail->setNext(toSet);
-  tail = toSet;
-  return true;
+  return insert(anAni, head->getNext());
+}
+
+template <typename T>
+bool DLL<T>::insert(T anAni, Node<T> *aNode) {
+  if(aNode == nullptr) { // This means it reached the end of the list without finding something larger than it, so it sets it to the new tail
+    tail->setNext(new Node<T>(anAni));
+    tail = tail->getNext();
+    return true;
+  }
+
+  if(anAni < aNode->getAni()) {
+    Node<T> *temp = new Node<T>(anAni);
+    aNode->getPrev()->setNext(temp);
+    aNode->setPrev(temp);
+    return true;
+  }
+  return insert(anAni, aNode->getNext());
 }
 
 template <typename T>
@@ -224,7 +256,13 @@ ostream& operator<<(ostream& out, const DLL<A>& aDLL) {
   return out;
 }
 
-
+template <typename A>
+istream& operator>>(istream& in, DLL<A>& src) {
+  A anAnimal;
+  in >> anAnimal;
+  src.insert(anAnimal);
+  return in;
+}
 
 
 

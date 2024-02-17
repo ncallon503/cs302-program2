@@ -5,10 +5,24 @@
 
 int main() {
 
+  srand(time(0)); // Seeds random number generator
+
   string input = "-1";
 
+  /* PoliceAnimal anAnimal1; // const int anAge, const policeType aPType, const string aName, const int theHoursServed, const int theMissionsCompleted, const int theMissionsFailed
+  PoliceAnimal anAnimal2(10, policeType::Bomb, "doggo", 5, 10, 3);
+  PoliceAnimal anAnimal3(anAnimal2);
+  anAnimal3.goOnMission();
+  anAnimal3.switchRole(policeType::Cadaver);
+  cout << anAnimal2;
+  cout << anAnimal3;
+
+  cin >> anAnimal1;
+
+  cout << "An animal 1: " << anAnimal1 << "\n\n";
+
   UserMenu clientMenu;
-  clientMenu.displayMenu();
+  clientMenu.displayMenu(); */
 
   /* DLL<Animal> *animals = new DLL<Animal>;
 
@@ -29,6 +43,15 @@ int main() {
   //cout << "Display: " << aNode->getAni() << "\n";
 
   DLL<Animal> animals;
+  cin >> animals;
+  cin >> animals;
+  cin >> animals;
+  cin >> animals;
+  cin >> animals;
+  animals.display();
+  animals.display();
+  animals.display();
+  animals.display();
   animals.insert(Animal(1, animalType::Dog, "john"));
   animals.insert(Animal(1, animalType::Dog, "will"));
   animals.insert(Animal(1, animalType::Dog, "will"));
@@ -40,19 +63,6 @@ int main() {
   tests.chooseAni("123")->getAni().testingThis();
   animals.remove("test");
   animals.display();
-
-
-  cout << "Please enter the type of animal relationship:\n";
-
-  while((input != "1") && (input != "2") && (input != "3") && (input != "0"))
-  {
-    cout << "Please enter one of the correct following options.\n\n";
-    cout << "1. A pet animal\n";
-    cout << "2. A service animal\n";
-    cout << "3. A competing animal\n";
-
-    cin >> input;
-  }
 
   //if input(1) petMenu
 

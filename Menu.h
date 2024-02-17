@@ -34,8 +34,9 @@ class UserMenu {
     const int policeMenu(); // Helper function to display the police menu called by displayMenu
     const int compMenu(); // Helper function to display the competition menu called by displayMenu
     DLL<Animal> animals;
+    const bool initializePlaceHolderMenus(); // This will initialize the Pet menu, Police menu, and Comp menu to all have an initial 5 animals to display and the user can manage.
     // DLL<Pet> pets; // Doubly linked list of pets contained by user menu
-    // DLL<PoliceAnimal> police; // Doubly linked list of police animals contained by user menu
+    DLL<PoliceAnimal> police; // Doubly linked list of police animals contained by user menu
     // DLL<CompAnimal> comp; // Doubly linked list of comeptitive animals contained by user menu
     
 };

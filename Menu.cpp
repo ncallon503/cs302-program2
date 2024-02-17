@@ -23,7 +23,8 @@ const int UserMenu::displayMenu() {
   
   int input = -1;
   while(input != 0) {
-    input = getInputChoice(0, 4);
+    cout << "\n1. Your pet menu \n2. The police force menu\n3. The competitive animal menu\n0. Exit\n\n";
+    input = getInputChoice(0, 3);
 
     switch(input) {
       case 1:
@@ -82,7 +83,7 @@ const int UserMenu::getInputChoice(const int minInt, const int maxInt) const {
     if(minInt > maxInt)
       throw RangeException();
 
-    cout << "Please enter an integer between " << minInt << " and " << maxInt << ".\n";
+    cout << "Please enter an integer between " << minInt << " and " << maxInt << ":\n";
     
     string input = "";
     cin >> input;
