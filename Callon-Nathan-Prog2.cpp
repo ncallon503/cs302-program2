@@ -2,14 +2,13 @@
 #include "DLL.h"
 #include "Menu.h"
 
-
 int main() {
 
   srand(time(0)); // Seeds random number generator
 
-  string input = "-1";
+  /* string input = "-1";
 
-  /* PoliceAnimal anAnimal1; // const int anAge, const policeType aPType, const string aName, const int theHoursServed, const int theMissionsCompleted, const int theMissionsFailed
+  PoliceAnimal anAnimal1; // const int anAge, const policeType aPType, const string aName, const int theHoursServed, const int theMissionsCompleted, const int theMissionsFailed
   PoliceAnimal anAnimal2(10, policeType::Bomb, "doggo", 5, 10, 3);
   PoliceAnimal anAnimal3(anAnimal2);
   anAnimal3.goOnMission();
@@ -19,10 +18,10 @@ int main() {
 
   cin >> anAnimal1;
 
-  cout << "An animal 1: " << anAnimal1 << "\n\n";
+  cout << "An animal 1: " << anAnimal1 << "\n\n"; */
 
   UserMenu clientMenu;
-  clientMenu.displayMenu(); */
+  clientMenu.displayMenu();
 
   /* DLL<Animal> *animals = new DLL<Animal>;
 
@@ -42,7 +41,7 @@ int main() {
   //Node<Animal>* aNode = new Node<Animal>(Animal(1, animalType::Dog, "john"));
   //cout << "Display: " << aNode->getAni() << "\n";
 
-  DLL<Animal> animals;
+  /* DLL<Animal> animals;
   cin >> animals;
   cin >> animals;
   cin >> animals;
@@ -62,7 +61,7 @@ int main() {
   tests.insert(Test());
   tests.chooseAni("123")->getAni().testingThis();
   animals.remove("test");
-  animals.display();
+  animals.display(); */
 
   //if input(1) petMenu
 
@@ -76,10 +75,10 @@ int main() {
 
   /* 1. Add competing animal 2. Remove competing animal 3. Display all competing animals 4. Go to event with animal 5. Compare competing animals ( <= == >= most trophies win/lost ratio) */
 
-  Animal anAnimal;
-  cout << anAnimal;
-  cin >> anAnimal;
-  cout << anAnimal;
+  // Animal anAnimal;
+  // cout << anAnimal;
+  // cin >> anAnimal;
+  // cout << anAnimal;
 
 
   //delete animals;

@@ -97,7 +97,10 @@ class PoliceAnimal: public Animal { // Derived Child Police Animal class
     int goOnMission(); // The police animal goes on a mission and returns the amount of hours served and whether the mission was successful (0 if mission not successful)
     policeType switchRole(policeType aType); // Switches the animals' role, resets the hours and missions completed and returns which role the animal was switched to
 
+    bool operator==(const char * op2); // Is equal to a name by const char *, this is overloaded because cName is a string
+    bool operator!=(const char * op2); // Is not equal to a name by const char *, this is overloaded because cName is a string
     friend ostream& operator<<(ostream &output, const PoliceAnimal& src);
+    friend istream& operator>>(istream& in, PoliceAnimal& src);
 
   private:
     policeType pType;

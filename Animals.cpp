@@ -162,7 +162,9 @@ istream & operator>>(istream &input, Animal& src) { // Input stream
       }
     } catch (const exception &e) {
       cout << e.what() << "\n";
-      return input; 
+      input.clear();
+      input >> src;
+      return input;
     }
     return input;
 }
@@ -205,6 +207,17 @@ PoliceAnimal & PoliceAnimal::operator=(const PoliceAnimal& op2) {
 PoliceAnimal::~PoliceAnimal() {
 }
 
+
+bool PoliceAnimal::operator==(const char * op2) {
+  if(strcmp(cName.c_str(), op2) == 0) return true; // Converting cName to string for compare operator
+  else return false;
+}
+
+bool PoliceAnimal::operator!=(const char * op2) {
+  if(!(strcmp(cName.c_str(), op2) == 0)) return true; // Converting cName to string for compare operator
+  else return false;
+}
+
 int PoliceAnimal::goOnMission() { // The police animal goes on a mission and returns the amount of hours served and whether the mission was successful (0 if mission not successful)
   int randNumber = ((rand() % 70) + hoursServed);
   int hours = (rand() % 20) + 5;
@@ -232,7 +245,8 @@ int PoliceAnimal::goOnMission() { // The police animal goes on a mission and ret
     cout << cName << " has completed their " << temp2 << " mission in " << hours << " hours.\n";
     missionsCompleted += 1;
   } else {
-    cout << cName << " has failed their " << temp2 << " mission, taking " << hours << "hours.\n";
+    cout << cName << " has failed their " << temp2 << " mission, taking " << hours << " hours.\n";
+    missionsFailed += 1;
   }
   return hours;
 }
@@ -280,13 +294,11 @@ policeType PoliceAnimal::switchRole(policeType aType) { // Switches the animals'
       break;
   }
 
-  cout << cName << " has switched roles and is now a police " << temp2 << " " << temp << ".\n";
+  cout << cName << " has switched roles and is now a police " << temp2 << " " << temp << ", hours and missions have been reset.\n";
   return aType;
 }
 
 ostream& operator<<(ostream &output, const PoliceAnimal& src) {
-  output << static_cast<const Animal&>(src);
-
   string temp = "", temp2 = "";
 
   switch(src.type) {
@@ -328,7 +340,63 @@ ostream& operator<<(ostream &output, const PoliceAnimal& src) {
 }
 
 istream& operator>>(istream& in, PoliceAnimal& src) {
-  in >> static_cast<Animal&>(src);
+  try {
+  
+    src.hoursServed = 0;
+    src.missionsCompleted = 0;
+    src.missionsFailed = 0; // These should all be reset so this can be a fresh start for the animal
+
+    cout << "Enter the Police name: ";
+
+    string tempName;
+    in >> tempName;
+  
+    src.cName = tempName;
+
+    string tempAge = "-1";
+    while(stoi(tempAge) < 0) {
+      cout << "Enter your animal's age: ";
+      in >> tempAge;
+    }
+
+    src.age = stoi(tempAge);
+   
+    src.type = animalType::Dog; // Animal type will always be a dog for police units
+
+    string temp;
+
+    while((temp != "0") && (temp != "1") && (temp != "2") && (temp != "3")) {
+      cout << "Enter the unit your animal will be in:\n 0. Cadaver \n 1. Narcotics\n 2. Bomb\n 3. Chase\n";
+      temp = "";
+      in >> temp;
+    }
+
+    switch(stoi(temp)) {
+      case 0:
+        src.pType = policeType::Cadaver;
+        break;
+      case 1:
+        src.pType = policeType::Narcotics;
+        break;
+      case 2:
+        src.pType = policeType::Bomb;
+        break;
+      case 3:
+        src.pType = policeType::Chase;
+        break;
+      default:
+        break;
+      }
+
+    return in;
+
+  } catch (const exception &e) {
+    cout << e.what() << "\n";
+    in.clear();
+    in >> src;
+    return in;
+  }
+
   return in;
 }
 
