@@ -686,6 +686,61 @@ ostream& operator<<(ostream &o, const CompAnimal& src) {
 
 istream& operator>>(istream& in, CompAnimal& src) {
 
+  try {
+  
+    src.trophies.clear();
+    src.eventsWon = 0;
+    src.eventsLost = 0; // These should all be reset so this can be a fresh start for the animal
+
+    cout << "Enter the competitor's name: ";
+
+    string tempName;
+    in >> tempName;
+  
+    src.cName = tempName;
+
+    string tempAge = "-1";
+    while(stoi(tempAge) < 0) {
+      cout << "Enter your animal's age: ";
+      in >> tempAge;
+    }
+
+    src.age = stoi(tempAge);
+   
+    string temp;
+
+    while((temp != "0") && (temp != "1") && (temp != "2") && (temp != "3")) {
+      cout << "Enter the type of animal:\n 0. Dog \n 1. Cat\n 2. Bird\n 3. Fish\n";
+      temp = "";
+      in >> temp;
+    }
+
+    switch(stoi(temp)) {
+      case 0:
+        src.type = animalType::Dog;
+        break;
+      case 1:
+        src.type = animalType::Cat;
+        break;
+      case 2:
+        src.type = animalType::Bird;
+        break;
+      case 3:
+        src.type = animalType::Fish;
+        break;
+      default:
+        break;
+      }
+
+    return in;
+
+  } catch (const exception &e) {
+    cout << e.what() << "\n";
+    in.clear();
+    in >> src;
+    return in;
+  }
+
   return in;
 }
 
