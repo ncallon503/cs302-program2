@@ -32,10 +32,10 @@ class UserMenu {
   public:
     UserMenu();
     ~UserMenu();
-    const int displayMenu();
+    const int displayMenu(); // Displays initial menu
 
   private:
-    const int getInputChoice(const int minInt, const int maxInt) const;
+    const int getInputChoice(const int minInt, const int maxInt) const; // Gets user input as an integer between a max and minimum value, recursively calls until valid input entered
     const int petMenu(); // Helper function to display the pet menu called by displayMenu
     const int policeMenu(); // Helper function to display the police menu called by displayMenu
     const int compMenu(); // Helper function to display the competition menu called by displayMenu

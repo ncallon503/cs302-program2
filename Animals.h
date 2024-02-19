@@ -36,14 +36,6 @@ class Animal { // Base Parent Animal class
     Animal& operator=(const Animal& op2); // Assignment (sets to)
     ~Animal();
     
-    bool testFun(const int anAge) {
-      cout << "This test works\n\n\n";
-      age = anAge;
-      cout << "My new age is " << age;
-      cout << "My age is " << name.get();
-      return true;
-    }
-
     bool operator<(const Animal& op2); // Less than
     bool operator<=(const Animal& op2); // Less than equal
     bool operator>(const Animal& op2); // More than
@@ -106,15 +98,15 @@ class PoliceAnimal: public Animal { // Derived Child Police Animal class
 
     bool operator==(const char * op2); // Is equal to a name by const char *, this is overloaded because cName is a string
     bool operator!=(const char * op2); // Is not equal to a name by const char *, this is overloaded because cName is a string
-    friend ostream& operator<<(ostream &output, const PoliceAnimal& src);
-    friend istream& operator>>(istream& in, PoliceAnimal& src);
+    friend ostream& operator<<(ostream &output, const PoliceAnimal& src); // Output stream operator overloader
+    friend istream& operator>>(istream& in, PoliceAnimal& src); // Input stream operator overloader
 
   private:
-    policeType pType;
+    policeType pType; // Type of police activity they will be doing
     int hoursServed; // Keeps track of hours animal has served in the force
     int missionsCompleted; // Keeps track of how many missions the animal has completed
     int missionsFailed; // Keeps track of how many missions the animal has failed
-    string cName;
+    string cName; // Child name to differ from the parent private char * name
 };
 
 class CompAnimal: public Animal { // Derived Child Competing Animal class
@@ -131,8 +123,8 @@ class CompAnimal: public Animal { // Derived Child Competing Animal class
 
     bool operator==(const char * op2); // Is equal to a name by const char *, this is overloaded because cName is a string
     bool operator!=(const char * op2); // Is not equal to a name by const char *, this is overloaded because cName is a string
-    friend ostream& operator<<(ostream &o, const CompAnimal& src);
-    friend istream& operator>>(istream& in, CompAnimal& src);
+    friend ostream& operator<<(ostream &o, const CompAnimal& src); // Output stream operator overloader
+    friend istream& operator>>(istream& in, CompAnimal& src); // Input stream operator overloader
 
   private:
     const int displayTrophies(const long unsigned int index); // Recursive helper to display trophies in vector

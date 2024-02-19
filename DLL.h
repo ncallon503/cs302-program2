@@ -47,25 +47,23 @@ class DLL {
     bool removeAll(); // removes all animals
     bool display(); // displays all animals
     
-    Node<T> *chooseAni(const char* aName);
+    Node<T> *chooseAni(const char* aName); // This is how the user chooses which animal to use functions on or remove (by name)
 
     template <typename A>
     friend ostream& operator<<(ostream& out, DLL<A>& aDLL); // Overloads ostream operator and needs Template A for declaring outside of class
     template <typename A>
     friend istream& operator>>(istream& in, DLL<A>& src); // Overloads istream operator, uses Template A for same reason
 
-  public:
-    Node<T> *chooseAniFinder(const char* aName, Node<T> *aNode);
   private:
-    
-    bool insert(T anAni, Node<T> *aNode);
+    bool insert(T anAni, Node<T> *aNode); // Inserts into the list sorted by age to keep list sorted
     bool removeNext(Node<T> *aNode); // Helper for removeAll to remove all nodes
     bool removeNameHelper(Node<T> *aNode, const char* aName); // Helper for traversing to remove by name
     bool displayNext(Node<T> *aNode); // Recursive helper for display() function
 
+    Node<T> *chooseAniFinder(const char* aName, Node<T> *aNode); // Helper function to recursively traverse through the list
+
     Node<T> *head;
     Node<T> *tail;
-
 };
     
 #include "DLL.tpp"
