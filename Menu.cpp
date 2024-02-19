@@ -35,6 +35,11 @@ const bool UserMenu::initializeMenus() {
   police.insert(PoliceAnimal(14, policeType::Chase, "Avalanche", 78, 14, 1));
   police.insert(PoliceAnimal(6, policeType::Narcotics, "Vortex", 12, 3, 0));
   police.insert(PoliceAnimal(10, policeType::Chase, "Saber", 32, 6, 2));
+  pet.insert(Pet("Bark", 8, animalType::Dog, 15, 56, 90));
+  pet.insert(Pet("Meow", 8, animalType::Cat, 27, 60, 15));
+  pet.insert(Pet("Chirp", 8, animalType::Bird, 15, 56, 90));
+  pet.insert(Pet("Bloop", 8, animalType::Fish, 15, 56, 90));
+  pet.insert(Pet("Sunfire", 8, animalType::Dog, 15, 56, 90));
   return true;
 }
 
@@ -72,11 +77,65 @@ const int UserMenu::displayMenu() {
 }
 
 const int UserMenu::petMenu() {
-  int input = -1;
+  int input = -1; // Menu input
+  string name = ""; // Placeholder name for user selecting animals
+  Pet tempAnimal;
   while(input != 0) {
+    cout << "\nPlease enter one of the following options:\n1. View all of your pets\n2. Give away a pet\n" << 
+    "3. Give away all your pets\n4. Adopt a pet\n5. Walk with one of your pets\n6. Feed one of your pets\n0. Exit\n\n";
     input = getInputChoice(0, 6);
+    switch(input) {
+      case 1:
+        cout << pet;
+      break;
+      case 2:
+        cout << "\nPlease enter the name of the animal to remove:\n";
+        cin >> name;
+        pet.remove(name.c_str());
+        cout << "\n";
+      break;
+      case 3:
+        pet.removeAll();
+        cout << "\nAll pets removed.\n";
+      break;
+      case 4:
+        cin >> tempAnimal;
+        pet.insert(tempAnimal);
+        cout << tempAnimal;
+      break;
+      case 5:
+        cout << "\nWhich pet do you want to play with?\n";
+        cin >> name;
+        cout << "\nYou have entered " << name << "\n";
+        if(!pet.chooseAni(name.c_str())) {
+          cout << "\nNo pet found with specified name.\n";
+          return petMenu();
+        }
+        pet.chooseAni(name.c_str())->getAni().play();
+        cout << "\n";
+      break;
+      case 6:
+        cout << "\nWhich pet do you want to feed?\n";
+        cin >> name;
+        cout << "\nYou have entered " << name << "\n";
+        if(!pet.chooseAni(name.c_str())) {
+          cout << "\nNo pet found with specified name.\n";
+          return petMenu();
+        }
+        pet.chooseAni(name.c_str())->getAni().feed();
+        cout << "\n";
+      break;
+      case 0:
+        cout << "\nExiting Pet Menu.\n";
+        return 1;
+      break;
+      default:
+        cout << "\nInvalid input. Exiting.\n";
+        return -1;
+      break;
+    }
   }
-  return 1;
+  return petMenu(); // Recursively return until the user enters 0
 }
 
 const int UserMenu::policeMenu() {

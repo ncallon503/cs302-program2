@@ -65,26 +65,29 @@ class Animal { // Base Parent Animal class
 
 };
 
-/* class Pet: public Animal { // Derived Child Pet class
+class Pet: public Animal { // Derived Child Pet class
   public:
     Pet();
-    Pet(const string aName, const int anAge, PetType aType);
+    Pet(const char* aName, const int anAge, animalType aType, const int walked, const int affLevel, const int hunger);
     Pet(const Pet& aPet);
-    Pet operator=(const Pet& aPet);
+    Pet & operator=(const Pet& aPet);
     ~Pet();
     
-    int walk(); // walks the animal, increasing affection level if animal not hungry, but lowering if animal is hungry
-    int play(); // plays with the animal, only possible if animal not hungry but increases affection
-    int feed(); // feeds animal, slightly increases affection but cannot do at max fullness
+    int play(); // plays with the animal, increasing affection level if animal not hungry, but lowering if animal is hungry
+    int feed(); // feeds the animal, slightly increases affection but cannot do at max fullness
+    
+    bool operator==(const char * op2); // Is equal to a name by const char *, this is overloaded because cName is a string
+    bool operator!=(const char * op2); // Is not equal to a name by const char *, this is overloaded because cName is a string
+    friend ostream& operator<<(ostream &o, const Pet& src);
+    friend istream& operator>>(istream& in, Pet& src);
 
   private:
-    int minutesWalked; // Keeps track of amount of minutes pet is walked
+    int minutesPlayed; // Keeps track of amount of minutes pet is played with
     int affectionLevel; // At a cap of 100, keeps track of how much the animal likes the owner
     int hungerLevel; // Keeps track of how hungry the animal is
     unique_ptr<char[]> cName;
 };
 
-*/
 
 class PoliceAnimal: public Animal { // Derived Child Police Animal class
   public:

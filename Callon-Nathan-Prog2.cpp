@@ -19,6 +19,7 @@ int main() {
   cin >> anAnimal1;
 
   cout << "An animal 1: " << anAnimal1 << "\n\n"; */
+  Pet aPet;
 
   UserMenu clientMenu;
   clientMenu.displayMenu();

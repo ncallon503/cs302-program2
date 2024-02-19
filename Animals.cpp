@@ -175,7 +175,193 @@ istream & operator>>(istream &input, Animal& src) { // Input stream
 
 // Pet Child Class
 
+Pet::Pet(): Animal(), minutesPlayed(0), affectionLevel(50), hungerLevel(50) {
+  cName.reset(new char[1]); // If the user accidentally couts a nullptr, the whole ostream breaks.
+  strcpy(cName.get(), "");
+}
 
+Pet::Pet(const char* aName, const int anAge, animalType aType, const int played, const int affLevel, const int hunger): Animal(anAge, aType, aName) {
+  if(aName == nullptr) {
+    cName.reset(new char[1]); // If the user accidentally couts a nullptr, the whole ostream breaks.
+    strcpy(cName.get(), "");
+  }
+  cName.reset(new char[strlen(aName) + 1]);
+  strcpy(cName.get(), aName);
+  minutesPlayed = played;
+  affectionLevel = affLevel;
+  hungerLevel = hunger;
+  age = anAge;
+  type = aType;
+}
+
+Pet::Pet(const Pet& aPet): Animal(aPet), minutesPlayed(aPet.minutesPlayed), affectionLevel(aPet.affectionLevel), hungerLevel(aPet.hungerLevel)  {
+  if(aPet.cName == nullptr) {
+    cName.reset(new char[1]); // If the user accidentally couts a nullptr, the whole ostream breaks.
+    strcpy(cName.get(), "");
+  }
+  cName.reset(new char[strlen(aPet.cName.get()) + 1]);
+  strcpy(cName.get(), aPet.cName.get());
+}
+
+Pet & Pet::operator=(const Pet& aPet) {
+  if(aPet.cName == nullptr) {
+    cName.reset(new char[1]); // If the user accidentally couts a nullptr, the whole ostream breaks.
+    strcpy(cName.get(), "");
+  }
+  cName.reset(new char[strlen(aPet.cName.get()) + 1]);
+  strcpy(cName.get(), aPet.cName.get());
+  minutesPlayed = aPet.minutesPlayed;
+  affectionLevel = aPet.affectionLevel;
+  hungerLevel = aPet.hungerLevel;
+  age = aPet.age;
+  type = aPet.type;
+  return *this;
+}
+
+Pet::~Pet() {
+  cName.reset(); // Reset just in case to clear memory
+}
+
+int Pet::play() {
+  int minutes = (rand() % 30) + 30; // Random number of minutes between 30 and 60
+  if(hungerLevel >= 80) {
+    cout << cName.get() << " is too hungry to play.\n";
+    hungerLevel += 5;
+    return 0;
+  }
+  if(hungerLevel >= 50) {
+    int affLevelChange = (rand() % 15) + 5; // Affection level decrease from 5 to 20
+    cout << cName.get() << " is hungry, but plays with you for " << minutes << " minutes and their affection level is wavering due to hunger, decreasing by " << affLevelChange << " points.\n";
+    hungerLevel += 25;
+    affectionLevel -= affLevelChange;
+    minutesPlayed += minutes;
+    return minutes;
+  } else {
+    int affLevelChange = (rand() % 20) + 8; // Affection level increase from 8 to 28
+    cout << cName.get() << " plays with you for " << minutes << " minutes and their affection level has increased by " << affLevelChange << ".\n";
+    hungerLevel += 15;
+    affectionLevel -= affLevelChange;
+    minutesPlayed += minutes;
+    return minutes;
+  } 
+  return 1;
+}
+
+int Pet::feed() {
+
+  int affLevelChange = (rand() % 5) + 5; // Affection level increase from 5 to 10
+  int hungDec = (rand() % 10) + 10; // Hunger level decrease amount between 10 and 20
+  if(hungerLevel <= 5) {
+    cout << cName.get() << " is too full to eat right now.\n";
+    return 0;
+  }
+  if(hungerLevel <= 20) { // Decreases hunger level to 0
+    cout << "After feeding " << cName.get() << " they are completely full, not hungry anymore, and affection is increased by " << affLevelChange << ".\n";
+    hungerLevel = 0;
+    affectionLevel += affLevelChange;
+    return 0;
+  } else {
+    cout << "You have fed " << cName.get() << " and their hunger level has decreased by " << hungDec << ", affection increased by " << affLevelChange << ".\n";
+    hungerLevel -= hungDec;
+    affectionLevel += affLevelChange;
+    return hungDec;
+  }
+  return 1;
+}
+
+bool Pet::operator==(const char * op2) {
+  if(strcmp(cName.get(), op2) == 0) return true;
+  return false;
+}
+
+bool Pet::operator!=(const char * op2) {
+  if(!(strcmp(cName.get(), op2) == 0)) return true;
+  return false;
+}
+
+ostream& operator<<(ostream &output, const Pet& src) {
+  string temp = "", temp2 = "";
+
+  switch(src.type) {
+    case 0:
+      temp = "dog";
+      break;
+    case 1:
+      temp = "cat";
+      break;
+    case 2:
+      temp = "bird";
+      break;
+    case 3:
+      temp = "fish";
+      break;
+    default:
+      break;
+  }
+
+  output << src.cName.get() << " the " << src.age << " year old " << temp << " has played with you for " << src.minutesPlayed << " minutes, has a hunger level of " << src.hungerLevel << ", and affection level of " << src.affectionLevel << ".\n";
+  return output;
+}
+
+istream& operator>>(istream& in, Pet& src) {
+  try {
+  
+    src.affectionLevel = 50;
+    src.minutesPlayed = 0;
+    src.hungerLevel = 45; // These should all be reset so this can be a fresh start for the animal
+
+    cout << "Enter the pet's name: ";
+
+    string tempName;
+    in >> tempName;
+  
+    src.cName.reset(new char[strlen(tempName.c_str()) + 1]);
+    strcpy(src.cName.get(), tempName.c_str());
+
+    string tempAge = "-1";
+    while(stoi(tempAge) < 0) {
+      cout << "Enter the pet's age: ";
+      in >> tempAge;
+    }
+
+    src.age = stoi(tempAge);
+   
+    string temp;
+
+    while((temp != "0") && (temp != "1") && (temp != "2") && (temp != "3")) {
+      cout << "Enter the type of pet you want:\n 0. Dog \n 1. Cat\n 2. Bird\n 3. Fish\n";
+      temp = "";
+      in >> temp;
+    }
+
+    switch(stoi(temp)) {
+      case 0:
+        src.type = animalType::Dog;
+        break;
+      case 1:
+        src.type = animalType::Cat;
+        break;
+      case 2:
+        src.type = animalType::Bird;
+        break;
+      case 3:
+        src.type = animalType::Fish;
+        break;
+      default:
+        break;
+      }
+
+    return in;
+
+  } catch (const exception &e) {
+    cout << e.what() << "\n";
+    in.clear();
+    in >> src;
+    return in;
+  }
+
+  return in;
+}
 
 // end Pet Child Class
 
