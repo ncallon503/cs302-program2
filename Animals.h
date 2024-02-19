@@ -144,30 +144,5 @@ class CompAnimal: public Animal { // Derived Child Competing Animal class
 
 }; 
 
-
-class Test: public Animal {
-  public:
-    Test(): Animal() {
-      name = "123";
-    }
-    ~Test() {
-
-    }
-
-    bool testingThis() {
-      cout << "\n\n\n\n TEST \n\n\n\n";
-
-      cout << "MY NAME IS " << name << "\n\n\n";
-      return true;
-    }
-
-
-    bool operator==(const char * op2); // Is equal to a name by const char *
-
-  private:
-    string name;
-    
-};
-
 #endif // _ANIMALS_H_
 
