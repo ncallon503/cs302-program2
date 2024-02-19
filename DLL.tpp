@@ -1,6 +1,13 @@
+/* This is included from the DLL.h file due to the compiler not being able
+to compile .tpp files. This defines all the functionality of the Node and DLL
+classes and their functions such as the ability to get the next and previous pointers,
+insert, display, remove, and more. */
+
 #pragma once
 
 #include "DLL.h"
+
+// Node<T> class
 
 template <typename T>
 Node<T>::Node(): next(nullptr), prev(nullptr) {}

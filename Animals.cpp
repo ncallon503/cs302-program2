@@ -1,3 +1,11 @@
+/* This file provides all the definitions for the main star of this program,
+the Animals. All the relational operators are overloaded for the Parent Animal class, 
+and in addition I chose to overload the binary operators of + and the incremental operator
+of += which would increment the age of the animal by said amount. To compare if animals are
+equivalent, it would check their name, age and type. The operators that the child also had to
+overload are the istream and ostream operators, along with the equal to name operator which
+use a const char *, due to the difference between the string and char names. */
+
 #ifndef _ANIMALS_CPP_
 #define _ANIMALS_CPP_
 
@@ -83,11 +91,6 @@ bool Animal::operator>=(const Animal& src) {
   else return false;
 }
 
-
-bool Test::operator==(const char * op2) {
-  if(strcmp(name.c_str(), op2) == 0) return true;
-  else return false;
-}
 bool Animal::operator!=(const Animal& src) {
   if((age != src.age) || !(strcmp(name.get(), src.name.get()) == 0) || (type != src.type)) return true; // Another unique case, compares all 3 attributes and if any are different returns false
   else return false;
@@ -279,7 +282,7 @@ bool Pet::operator!=(const char * op2) {
   return false;
 }
 
-ostream& operator<<(ostream &output, const Pet& src) {
+ostream& operator<<(ostream &o, const Pet& src) {
   string temp = "", temp2 = "";
 
   switch(src.type) {
@@ -299,8 +302,8 @@ ostream& operator<<(ostream &output, const Pet& src) {
       break;
   }
 
-  output << src.cName.get() << " the " << src.age << " year old " << temp << " has played with you for " << src.minutesPlayed << " minutes, has a hunger level of " << src.hungerLevel << ", and affection level of " << src.affectionLevel << ".\n";
-  return output;
+  o << src.cName.get() << " the " << src.age << " year old " << temp << " has played with you for " << src.minutesPlayed << " minutes, has a hunger level of " << src.hungerLevel << ", and affection level of " << src.affectionLevel << ".\n";
+  return o;
 }
 
 istream& operator>>(istream& in, Pet& src) {
@@ -592,7 +595,99 @@ istream& operator>>(istream& in, PoliceAnimal& src) {
 
 // Competing Animal Child Class
 
+CompAnimal::CompAnimal(): Animal(), trophies{}, eventsWon(0), eventsLost(0), cName("") {}
 
+CompAnimal::CompAnimal(const CompAnimal& src): Animal(src), trophies(src.trophies), eventsWon(src.eventsWon), eventsLost(src.eventsLost), cName(src.cName) {}
+
+CompAnimal::CompAnimal(const int anAge, const animalType aType, const string aName, const int theEventsWon, const int theEventsLost, const vector<string> theTrophies): Animal(anAge, aType, aName.c_str()), trophies(theTrophies), eventsWon(theEventsWon), eventsLost(theEventsLost), cName(aName) { }
+
+CompAnimal & CompAnimal::operator=(const CompAnimal& src) {
+  Animal::operator=(src);
+  trophies = vector<string>(src.trophies);
+  eventsWon = src.eventsWon;
+  eventsLost = src.eventsLost;
+  cName = src.cName;
+  return *this;
+}
+
+CompAnimal::~CompAnimal() {}
+
+const double CompAnimal::winLossRatio() {
+  double ratio = eventsWon / eventsLost; // Ratio determined by wins vs losses
+  return ratio;
+}
+
+const bool CompAnimal::competeInEvent(const string event) {
+  int eventsCompeted = eventsWon + eventsLost;
+  int chance = (rand() % 10) + eventsCompeted + 40; // Base chance of 40-50% of winning, increased by the amount of events already competed in (more experience the better)
+  cout << "\n" << cName << " is competing in the " << event << " event.\n";
+  if((rand() % 100) >= chance) { // Event failed, events lost incremented by 1
+    eventsLost += 1;
+    cout << cName << " has sadly failed in the event, making a total of " << eventsWon << " events won and " << eventsLost << " events lost.\n";
+    return false;
+  } // Otherwise event success
+  eventsWon += 1; // Event won, events won incremented by one and trophy added of event to vector
+  cout << cName << " has successfuly got 1st place in the " << event << " event, getting a trophy for it and making a total of " << eventsWon << " events won and " << eventsLost << " events lost!\n";
+  trophies.push_back(event);
+  return true;
+}
+
+const int CompAnimal::checkStats() {
+  if(trophies.empty()) {
+    cout << cName << " has " << eventsWon << " events won, " << eventsLost << " events lost, competing in a total of " << eventsWon + eventsLost << " events, and has not won any trophies yet.\n";
+    return eventsWon + eventsLost;
+  }
+  cout << cName << " has " << eventsWon << " events won, " << eventsLost << " events lost, competing in a total of " << eventsWon + eventsLost << " events, and has won the following trophies:\n";
+  displayTrophies(0);
+  cout << "\n";
+  return eventsWon + eventsLost;
+}
+
+const int CompAnimal::displayTrophies(const long unsigned int index) { // long unsigned int because vector uses this for its size() method
+  if(index == trophies.size()) // Base case of traveling through vector
+    return index;
+  cout << trophies[index] << " trophy\n";
+  return displayTrophies(index + 1);
+}
+
+bool CompAnimal::operator==(const char * op2) {
+  if(strcmp(cName.c_str(), op2) == 0) return true;
+  else return false;
+}
+
+bool CompAnimal::operator!=(const char * op2) {
+  if(!(strcmp(cName.c_str(), op2) == 0)) return true;
+  else return false;
+}
+
+ostream& operator<<(ostream &o, const CompAnimal& src) {
+  string temp = "";
+
+  switch(src.type) {
+    case 0:
+      temp = "dog";
+      break;
+    case 1:
+      temp = "cat";
+      break;
+    case 2:
+      temp = "bird";
+      break;
+    case 3:
+      temp = "fish";
+      break;
+    default:
+      break;
+  }
+
+  o << src.cName << " the " << src.age << " year old " << temp << " has competed in a total of " << src.eventsWon + src.eventsLost << " events, winning " << src.eventsWon << " of them and losing " << src.eventsLost << ".\n";   
+  return o;
+}
+
+istream& operator>>(istream& in, CompAnimal& src) {
+
+  return in;
+}
 
 // end Competing Animal Child Class
 

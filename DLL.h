@@ -1,3 +1,12 @@
+/* This file defines the Doubly Linked List and Node classes
+which both use templates so they can store any type of class,
+in this case Animals and their child (even though base Animals are 
+not used in the program). The doubly linked list has nodes of next
+and previous pointers and is always sorted by age due to the insert
+method using the overloaded operators to check where to insert
+at the correct spot, and you can search for animals and remove/perform
+actions on them by name. */
+
 #pragma once
 
 #include"Animals.h"
@@ -59,27 +68,6 @@ class DLL {
 
 };
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #include "DLL.tpp"
 
 

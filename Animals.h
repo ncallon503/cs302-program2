@@ -1,8 +1,11 @@
-/* Nathan Callon, CS302, 2/5/2024, Karla Fant
-I decided to have 3 different types of animals, which will be
-pets, service animals, and competitive animals (that compete 
-in competitions, of course). By default they will all have a name 
-and age, but there will be many differences in the derived classes. */
+/* There is a parent Animal class with an age, type and name that
+all the children derive from. The name uses a char array which is set
+to private so some of the children can use string classes for their names,
+and the children are Pets, Police Animals, and Competitive Animals. They
+all have their own special functionalities and Police Animals can only be
+of type Dog for the animalType. Another enum is made for the police which
+is the category of missions they go on which is Cadaver searching, Narcotics searching,
+Bomb missions and Chase missions. */
 
 #ifndef _ANIMALS_H_
 #define _ANIMALS_H_
@@ -85,7 +88,8 @@ class Pet: public Animal { // Derived Child Pet class
     int minutesPlayed; // Keeps track of amount of minutes pet is played with
     int affectionLevel; // At a cap of 100, keeps track of how much the animal likes the owner
     int hungerLevel; // Keeps track of how hungry the animal is
-    unique_ptr<char[]> cName;
+    unique_ptr<char[]> cName; // Due to parent's name being private we rename the name to cName here
+
 };
 
 
@@ -113,25 +117,32 @@ class PoliceAnimal: public Animal { // Derived Child Police Animal class
     string cName;
 };
 
-/*
-
 class CompAnimal: public Animal { // Derived Child Competing Animal class
   public:
     CompAnimal();
-    CompAnimal(const CompAnimal& aCompAnimal);
-    CompAnimal operator=(const CompAnimal& aCompAnimal);
+    CompAnimal(const CompAnimal& src);
+    CompAnimal(const int anAge, const animalType aType, const string aName, const int theEventsWon, const int theEventsLost, const vector<string> theTrophies);
+    CompAnimal & operator=(const CompAnimal& src);
     ~CompAnimal();
 
-    double winLossRatio(); // The higher the number the better, this is the ratio of events won vs. lost for animals
-    bool competeInEvent(const string event); // The animal competes in an event, and either ends up winning a trophy or losing. Animals that have competed more have a higher chance of winning.
+    const double winLossRatio(); // The higher the number the better, this is the ratio of events won vs. lost for animals, prints it and displays it
+    const bool competeInEvent(const string event); // The animal competes in an event, and either ends up winning a trophy or losing. Animals that have competed more have a higher chance of winning.
+    const int checkStats(); // Displays the specific stats of the competitor listing trophies, events won and lost and more details
+
+    bool operator==(const char * op2); // Is equal to a name by const char *, this is overloaded because cName is a string
+    bool operator!=(const char * op2); // Is not equal to a name by const char *, this is overloaded because cName is a string
+    friend ostream& operator<<(ostream &o, const CompAnimal& src);
+    friend istream& operator>>(istream& in, CompAnimal& src);
 
   private:
+    const int displayTrophies(const long unsigned int index); // Recursive helper to display trophies in vector
+
     vector<string> trophies; // List of 1st place trophies depending on what user wants to compete their animal in
     int eventsWon; // Counter of how many events the animal has won
     int eventsLost; // Counter of how many the events the animal has lost
     string cName; // Animal's name
 
-}; */
+}; 
 
 
 class Test: public Animal {

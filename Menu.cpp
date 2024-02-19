@@ -1,3 +1,9 @@
+/* The User Menu contains three Doubly Linked Lists, one of type Pet,
+one of type Police Animal, and one of type Competing Animal. These are
+all managed through the menu and the public functions that the Animals
+give. They are pre-initialized with Animals so the user has an idea
+of what the menu's purpose is. */
+
 #ifndef _MENU_CPP_
 #define _MENU_CPP_
 
@@ -35,11 +41,15 @@ const bool UserMenu::initializeMenus() {
   police.insert(PoliceAnimal(14, policeType::Chase, "Avalanche", 78, 14, 1));
   police.insert(PoliceAnimal(6, policeType::Narcotics, "Vortex", 12, 3, 0));
   police.insert(PoliceAnimal(10, policeType::Chase, "Saber", 32, 6, 2));
-  pet.insert(Pet("Bark", 8, animalType::Dog, 15, 56, 90));
-  pet.insert(Pet("Meow", 8, animalType::Cat, 27, 60, 15));
-  pet.insert(Pet("Chirp", 8, animalType::Bird, 15, 56, 90));
-  pet.insert(Pet("Bloop", 8, animalType::Fish, 15, 56, 90));
-  pet.insert(Pet("Sunfire", 8, animalType::Dog, 15, 56, 90));
+  pet.insert(Pet("Bark", 10, animalType::Dog, 15, 56, 90));
+  pet.insert(Pet("Meow", 6, animalType::Cat, 27, 60, 15));
+  pet.insert(Pet("Chirp", 7, animalType::Bird, 12, 56, 45));
+  pet.insert(Pet("Bloop", 14, animalType::Fish, 18, 42, 67));
+  pet.insert(Pet("Sunfire", 12, animalType::Dog, 11, 58, 23));
+  comp.insert(CompAnimal(5, animalType::Dog, "Ironhide", 3, 1, { "Dog Race", "Eating Competition", "Height Contest" }));
+  comp.insert(CompAnimal(8, animalType::Cat, "Celest", 1, 1, { "Stealth Contest" }));
+  comp.insert(CompAnimal(9, animalType::Fish, "Swimmer", 2, 0, { "Swimming Competition", "Hoop Jumping" }));
+  comp.insert(CompAnimal(17, animalType::Bird, "Tempest", 4, 3, { "Flying Contest", "Altitude Contest", "Obstacle Course", "Hunting Competition" }));
   return true;
 }
 
@@ -104,9 +114,9 @@ const int UserMenu::petMenu() {
         cout << tempAnimal;
       break;
       case 5:
-        cout << "\nWhich pet do you want to play with?\n";
+        cout << "\nWhich pet do you want to play with? (Please enter name)\n";
         cin >> name;
-        cout << "\nYou have entered " << name << "\n";
+        cout << "\nYou have entered " << name << "\n\n";
         if(!pet.chooseAni(name.c_str())) {
           cout << "\nNo pet found with specified name.\n";
           return petMenu();
@@ -115,9 +125,9 @@ const int UserMenu::petMenu() {
         cout << "\n";
       break;
       case 6:
-        cout << "\nWhich pet do you want to feed?\n";
+        cout << "\nWhich pet do you want to feed? (Please enter name)\n";
         cin >> name;
-        cout << "\nYou have entered " << name << "\n";
+        cout << "\nYou have entered " << name << "\n\n";
         if(!pet.chooseAni(name.c_str())) {
           cout << "\nNo pet found with specified name.\n";
           return petMenu();
@@ -169,7 +179,7 @@ const int UserMenu::policeMenu() {
       case 5:
         cout << "\nPlease enter the name of the animal to go on a mission with:\n";
         cin >> name;
-        cout << "\nYou have entered " << name << "\n";
+        cout << "\nYou have entered " << name << "\n\n";
         if(!police.chooseAni(name.c_str())) {
           cout << "\nNo animal found with specified name.\n";
           return policeMenu();
@@ -180,7 +190,7 @@ const int UserMenu::policeMenu() {
       case 6:
         cout << "\nPlease enter the name of the animal you want to change roles of:\n";
         cin >> name;
-        cout << "\nYou have entered " << name << "\n";
+        cout << "\nYou have entered " << name << "\n\n";
         if(!police.chooseAni(name.c_str())) {
           cout << "\nNo animal found with specified name.\n";
           return policeMenu();
@@ -221,11 +231,68 @@ const int UserMenu::policeMenu() {
 }
 
 const int UserMenu::compMenu() {
-  int input = -1;
+  int input = -1; // Menu input
+  string name = ""; // Placeholder name for user selecting animals
+  string event = ""; // Event to enter for user choice
+  CompAnimal tempAnimal;
   while(input != 0) {
+    cout << "\nPlease enter one of the following options:\n1. View all competitors\n2. Sign off a competing animal\n" << 
+    "3. Sign off all competing animals\n4. Sign up a competing animal\n5. Choose to compete with an animal \n6. View stats of specific animal\n0. Exit\n\n";
     input = getInputChoice(0, 6);
+    switch(input) {
+      case 1:
+        cout << comp;
+      break;
+      case 2:
+        cout << "\nPlease enter the name of the animal to remove:\n";
+        cin >> name;
+        comp.remove(name.c_str());
+        cout << "\n";
+      break;
+      case 3:
+        comp.removeAll();
+        cout << "\nAll competitors removed.\n";
+      break;
+      case 4:
+        cin >> tempAnimal;
+        comp.insert(tempAnimal);
+        cout << tempAnimal;
+      break;
+      case 5:
+        cout << "\nEnter an animal you would like to compete with:\n";
+        cin >> name;
+        cout << "\nYou have entered " << name << "\n\n";
+        if(!comp.chooseAni(name.c_str())) {
+          cout << "\nNo animal found with specified name.\n";
+          return compMenu();
+        }
+        cout << "\nPlease enter a name of an event to compete in.\n";
+        cin >> event;
+        comp.chooseAni(name.c_str())->getAni().competeInEvent(event);
+        cout << "\n";
+      break;
+      case 6:
+        cout << "\nWhich animal would you like to check the stats of? (Please enter name)\n";
+        cin >> name;
+        cout << "\nYou have entered " << name << "\n\n";
+        if(!comp.chooseAni(name.c_str())) {
+          cout << "\nNo animal found with specified name.\n";
+          return compMenu();
+        }
+        comp.chooseAni(name.c_str())->getAni().checkStats();
+        cout << "\n";
+      break;
+      case 0:
+        cout << "\nExiting Competition Menu.\n";
+        return 1;
+      break;
+      default:
+        cout << "\nInvalid input. Exiting.\n";
+        return -1;
+      break;
+    }
   }
-  return 1;
+  return compMenu(); // Recursively return until the user enters 0
 }
 
 const int UserMenu::getInputChoice(const int minInt, const int maxInt) const {
